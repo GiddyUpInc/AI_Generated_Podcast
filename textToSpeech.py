@@ -9,11 +9,11 @@ from datasets import load_dataset
 import torch
 import soundfile as sf
 from datasets import load_dataset
-
-#sf.write("speech new guy.wav", speech_newguy.numpy(), samplerate=16000)
+from datetime import datetime
 
 class TTS:
     def __init__(self):
+        """Load model, processors and embeddings for TTS"""
         self.processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
         self.model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
         self.vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
@@ -27,14 +27,21 @@ class TTS:
         return
 
     def get_embeddings(self):
+        """Return embeddings for speakers"""
         return self.speaker_a_embeddings, self.speaker_b_embeddings
 
     def generate_speech(self, text: str, speaker_embedding):
+        """Generate and return single line of speech as pytorch vector"""
         inputs = self.processor(text=text, return_tensors="pt")
         speech = self.model.generate_speech(inputs["input_ids"], speaker_embedding, vocoder=self.vocoder)
         print("hello")
         return speech
 
     def save_audio(self, speech):
-        sf.write("speech_new.wav", speech.numpy(), samplerate=16000)
+        """Save pytorch vector as WAV file"""
+        # Create filename based on datetime
+        now = datetime.now()
+        filename = now.strftime("podcast_%m-%d-%Y_%H-%M-%S")
+        # Save file
+        sf.write(f"audio/{filename}.wav", speech.numpy(), samplerate=16000)
         return

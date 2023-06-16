@@ -1,4 +1,8 @@
-import os
+"""
+Description:
+    Main script for podcast generation.
+"""
+
 import json
 import torch
 import openai
