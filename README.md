@@ -1,5 +1,5 @@
 # iMissTheOldYoutube
-The New Youtube. Attempt to create infinite livestream with podcast and music video content.
+AI generated podcast from a single prompt, using Meta text-to-speech model and OpenAI text-completion. 
 
 ## Installing Requirements
 
